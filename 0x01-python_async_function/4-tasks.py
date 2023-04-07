@@ -5,13 +5,16 @@ import asyncio
 from typing import List
 
 
-task_wait_random = __import__('4-tasks').task_wait_random
-
-
 async def task_wait_n(n: int, max_delay: int) -> List[float]:
     '''Executes task_wait_random n times.
     '''
-    wait_times = await asyncio.gather(
-        *tuple(map(lambda _: task_wait_random(max_delay), range(n)))
-    )
-    return sorted(wait_times)
+    modified_random = __import__('4-tasks').task_wait_random
+
+    delay_list = []
+    i = 0
+
+    while i < n:
+        delay_list.append(await modified_random(max_delay))
+        i += 1
+
+    return sorted(delay_list)
