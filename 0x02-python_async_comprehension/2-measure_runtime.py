@@ -6,13 +6,12 @@ import time
 from importlib import import_module as using
 
 
-comp = __import__('1-async_comprehension').async_comprehension
+async_comprehension = using('1-async_comprehension').async_comprehension
 
 
 async def measure_runtime() -> float:
-    ''' Executes async_comprehension 4 times and measures the
-    total execution time'''
+    ''' Runs async_comprehension in parallel lines and returns the total time'''
 
     start_time = time.time()
-    await asyncio.gather(comp(), comp(), comp(), comp())
+    await asyncio.gather(*(async_comprehension() for _ in range(4)))
     return time.time() - start_time
